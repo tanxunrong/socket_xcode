@@ -1,13 +1,13 @@
 //
 //  common.h
-//  unix_socket
+//  echo_client
 //
 //  Created by tanxunrong on 13-9-25.
 //  Copyright (c) 2013年 tanxunrong. All rights reserved.
 //
 
-#ifndef unix_socket_common_h
-#define unix_socket_common_h
+#ifndef txr_socket_common_h
+#define txr_socket_common_h
 
 #include <stdio.h>
 #include <stdlib.h>
