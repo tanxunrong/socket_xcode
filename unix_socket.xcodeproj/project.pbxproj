@@ -7,31 +7,32 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		BD9ABB6B17F3320C0099FB85 /* main.c in Sources */ = {isa = PBXBuildFile; fileRef = BD9ABB6A17F3320C0099FB85 /* main.c */; };
-		BD9ABB6D17F3320C0099FB85 /* unix_socket.1 in CopyFiles */ = {isa = PBXBuildFile; fileRef = BD9ABB6C17F3320C0099FB85 /* unix_socket.1 */; };
+		BDBEDA5617F477BF003E528E /* main.c in Sources */ = {isa = PBXBuildFile; fileRef = BDBEDA5517F477BF003E528E /* main.c */; };
+		BDBEDA5817F477BF003E528E /* echo_client.1 in CopyFiles */ = {isa = PBXBuildFile; fileRef = BDBEDA5717F477BF003E528E /* echo_client.1 */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
-		BD9ABB6517F3320C0099FB85 /* CopyFiles */ = {
+		BDBEDA5117F477BF003E528E /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = /usr/share/man/man1/;
 			dstSubfolderSpec = 0;
 			files = (
-				BD9ABB6D17F3320C0099FB85 /* unix_socket.1 in CopyFiles */,
+				BDBEDA5817F477BF003E528E /* echo_client.1 in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 1;
 		};
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		BD9ABB6717F3320C0099FB85 /* unix_socket */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = unix_socket; sourceTree = BUILT_PRODUCTS_DIR; };
-		BD9ABB6A17F3320C0099FB85 /* main.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = main.c; sourceTree = "<group>"; };
-		BD9ABB6C17F3320C0099FB85 /* unix_socket.1 */ = {isa = PBXFileReference; lastKnownFileType = text.man; path = unix_socket.1; sourceTree = "<group>"; };
+		BD9ABB7717F3369D0099FB85 /* common.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = common.h; sourceTree = "<group>"; };
+		BDBEDA5317F477BF003E528E /* echo_client */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = echo_client; sourceTree = BUILT_PRODUCTS_DIR; };
+		BDBEDA5517F477BF003E528E /* main.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = main.c; sourceTree = "<group>"; };
+		BDBEDA5717F477BF003E528E /* echo_client.1 */ = {isa = PBXFileReference; lastKnownFileType = text.man; path = echo_client.1; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		BD9ABB6417F3320C0099FB85 /* Frameworks */ = {
+		BDBEDA5017F477BF003E528E /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -44,7 +45,8 @@
 		BD9ABB5E17F3320C0099FB85 = {
 			isa = PBXGroup;
 			children = (
-				BD9ABB6917F3320C0099FB85 /* unix_socket */,
+				BD9ABB7617F3368F0099FB85 /* include */,
+				BDBEDA5417F477BF003E528E /* echo_client */,
 				BD9ABB6817F3320C0099FB85 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -52,38 +54,46 @@
 		BD9ABB6817F3320C0099FB85 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				BD9ABB6717F3320C0099FB85 /* unix_socket */,
+				BDBEDA5317F477BF003E528E /* echo_client */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		BD9ABB6917F3320C0099FB85 /* unix_socket */ = {
+		BD9ABB7617F3368F0099FB85 /* include */ = {
 			isa = PBXGroup;
 			children = (
-				BD9ABB6A17F3320C0099FB85 /* main.c */,
-				BD9ABB6C17F3320C0099FB85 /* unix_socket.1 */,
+				BD9ABB7717F3369D0099FB85 /* common.h */,
 			);
-			path = unix_socket;
+			path = include;
+			sourceTree = "<group>";
+		};
+		BDBEDA5417F477BF003E528E /* echo_client */ = {
+			isa = PBXGroup;
+			children = (
+				BDBEDA5517F477BF003E528E /* main.c */,
+				BDBEDA5717F477BF003E528E /* echo_client.1 */,
+			);
+			path = echo_client;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		BD9ABB6617F3320C0099FB85 /* unix_socket */ = {
+		BDBEDA5217F477BF003E528E /* echo_client */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = BD9ABB7017F3320C0099FB85 /* Build configuration list for PBXNativeTarget "unix_socket" */;
+			buildConfigurationList = BDBEDA5B17F477BF003E528E /* Build configuration list for PBXNativeTarget "echo_client" */;
 			buildPhases = (
-				BD9ABB6317F3320C0099FB85 /* Sources */,
-				BD9ABB6417F3320C0099FB85 /* Frameworks */,
-				BD9ABB6517F3320C0099FB85 /* CopyFiles */,
+				BDBEDA4F17F477BF003E528E /* Sources */,
+				BDBEDA5017F477BF003E528E /* Frameworks */,
+				BDBEDA5117F477BF003E528E /* CopyFiles */,
 			);
 			buildRules = (
 			);
 			dependencies = (
 			);
-			name = unix_socket;
-			productName = unix_socket;
-			productReference = BD9ABB6717F3320C0099FB85 /* unix_socket */;
+			name = echo_client;
+			productName = echo_client;
+			productReference = BDBEDA5317F477BF003E528E /* echo_client */;
 			productType = "com.apple.product-type.tool";
 		};
 /* End PBXNativeTarget section */
@@ -107,17 +117,17 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				BD9ABB6617F3320C0099FB85 /* unix_socket */,
+				BDBEDA5217F477BF003E528E /* echo_client */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXSourcesBuildPhase section */
-		BD9ABB6317F3320C0099FB85 /* Sources */ = {
+		BDBEDA4F17F477BF003E528E /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				BD9ABB6B17F3320C0099FB85 /* main.c in Sources */,
+				BDBEDA5617F477BF003E528E /* main.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -192,14 +202,18 @@
 			};
 			name = Release;
 		};
-		BD9ABB7117F3320C0099FB85 /* Debug */ = {
+		BDBEDA5917F477BF003E528E /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Debug;
 		};
-		BD9ABB7217F3320C0099FB85 /* Release */ = {
+		BDBEDA5A17F477BF003E528E /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -218,11 +232,11 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		BD9ABB7017F3320C0099FB85 /* Build configuration list for PBXNativeTarget "unix_socket" */ = {
+		BDBEDA5B17F477BF003E528E /* Build configuration list for PBXNativeTarget "echo_client" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				BD9ABB7117F3320C0099FB85 /* Debug */,
-				BD9ABB7217F3320C0099FB85 /* Release */,
+				BDBEDA5917F477BF003E528E /* Debug */,
+				BDBEDA5A17F477BF003E528E /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 		};
