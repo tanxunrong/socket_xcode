@@ -19,13 +19,13 @@ static int listen_fd;
 static GMainContext *liscontext;
 static GMainLoop *lisloop;
 static GSource *lissource;
-static GList *connlist=NULL;
-
+static GList *connlist;
 void display_list(GList *ll)
 {
     GList *it=NULL;
-    for (it = ll; it != NULL;it = it->next) {
-        txr_conn_p conn=(txr_conn_p)(it->data);
+    for (it = ll; it->next != NULL;it = ll->next) {
+        txr_conn_p conn=(txr_conn_p)it->data;
+        assert(conn->sockfd != 0);
         printf("%d\t",conn->sockfd);
     }
     printf("\n");
@@ -33,19 +33,20 @@ void display_list(GList *ll)
 
 gboolean accept_cb(gpointer *data)
 {
-    GList *connlist=(GList *)data;
+//    assert(data == NULL);
     int sockfd=accept(listen_fd,NULL,NULL);
     if (sockfd < 0)
         return FALSE;
-    txr_conn_p newconn = (txr_conn_p)g_slice_alloc(sizeof(txr_conn_t));
+    txr_conn_p newconn = (txr_conn_p)malloc(sizeof(txr_conn_t));
     memset(newconn,0,sizeof(txr_conn_t));
     newconn->sockfd=sockfd;
+    assert(newconn->sockfd != 0);
     
-    connlist = g_list_prepend(connlist, (gpointer)newconn);
-    if (connlist == NULL)
-        return FALSE;
+    connlist = g_list_append(connlist, (gpointer)newconn);
+    assert(connlist != NULL);
+    
     display_list(connlist);
-//    g_print("new fd %d ,list count %d \n",sockfd,g_list_length(connlist));
+    g_print("new fd %d ,list count %d \n",sockfd,g_list_length(connlist));
     return TRUE;
 }
 
@@ -75,8 +76,8 @@ int main(int argc,char* argv[])
 
     GIOChannel *lischan=g_io_channel_unix_new(listen_fd);
     lissource=g_io_create_watch(lischan, G_IO_IN);
-    connlist = g_list_alloc();
-    g_source_set_callback(lissource, (GSourceFunc)accept_cb, connlist, NULL);
+
+    g_source_set_callback(lissource, (GSourceFunc)accept_cb, NULL, NULL);
     g_source_attach(lissource, liscontext);
     g_main_loop_run(lisloop);
     g_main_loop_unref(lisloop);

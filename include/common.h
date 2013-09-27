@@ -25,8 +25,9 @@
 #include <fcntl.h>
 #include <sys/select.h>
 #include <pthread.h>
+#include <assert.h>
 
-#define MAXLINE 1000
+#define MAXLINE 1024
 #define LISTEN_QUEUE 10
 
 void err_quit(char* str)
