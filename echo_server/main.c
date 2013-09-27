@@ -7,32 +7,51 @@
 //
 
 #include "../include/common.h"
-#include <event2/event.h>
-#include <assert.h>
+#include <glib.h>
 
-typedef struct sock_conn {
+typedef struct txr_conn {
     int sockfd;
-    int status;
     char rbuf[MAXLINE];
     char wbuf[MAXLINE];
-    
-} sock_conn_t;
-typedef sock_conn_t * sock_conn_p;
-static  evutil_socket_t listen_fd=0;
-static  struct event_base *evbase,*evlisten;
-#define CONN_MAXFD 65536
-static sock_conn_t conn_table[CONN_MAXFD] = {0};
-static sig_atomic_t toshut=0;
-void callback_accept(evutil_socket_t fd,short what,void *arg)
+} txr_conn_t;
+typedef txr_conn_t * txr_conn_p;
+static int listen_fd;
+static GMainContext *liscontext;
+static GMainLoop *lisloop;
+static GSource *lissource;
+static GList *connlist=NULL;
+
+void display_list(GList *ll)
 {
-    evutil_socket_t sockfd=accept(fd, NULL, NULL);
-    conn_table[sockfd].status=1;
-    
+    GList *it=NULL;
+    for (it = ll; it != NULL;it = it->next) {
+        txr_conn_p conn=(txr_conn_p)(it->data);
+        printf("%d\t",conn->sockfd);
+    }
+    printf("\n");
 }
+
+gboolean accept_cb(gpointer *data)
+{
+    GList *connlist=(GList *)data;
+    int sockfd=accept(listen_fd,NULL,NULL);
+    if (sockfd < 0)
+        return FALSE;
+    txr_conn_p newconn = (txr_conn_p)g_slice_alloc(sizeof(txr_conn_t));
+    memset(newconn,0,sizeof(txr_conn_t));
+    newconn->sockfd=sockfd;
+    
+    connlist = g_list_prepend(connlist, (gpointer)newconn);
+    if (connlist == NULL)
+        return FALSE;
+    display_list(connlist);
+//    g_print("new fd %d ,list count %d \n",sockfd,g_list_length(connlist));
+    return TRUE;
+}
+
 
 int main(int argc,char* argv[])
 {
-    //server socket addr
     struct sockaddr_in servaddr;
     memset(&servaddr,0,sizeof(servaddr));
     servaddr.sin_family=AF_INET;
@@ -51,20 +70,16 @@ int main(int argc,char* argv[])
         err_sys("listen");
     setfdnonblock(listen_fd);
     
-    struct event_config *evcfg;
-    evcfg = event_config_new();
-    assert(evcfg != NULL);
-    event_config_avoid_method(evcfg, "select");
-    struct event_base *evbase = event_base_new_with_config(evcfg);
-    assert(evbase != NULL);
-    event_config_free(evcfg);
-    
-    evlisten=event_base_new();
-    assert(evlisten != NULL);
-    
-    struct event *evaccept=event_new(evlisten, listen_fd, EV_READ, callback_accept, NULL);
-    assert(evaccept != NULL);
-    
+    liscontext = g_main_context_new();
+    lisloop = g_main_loop_new(liscontext, FALSE);
+
+    GIOChannel *lischan=g_io_channel_unix_new(listen_fd);
+    lissource=g_io_create_watch(lischan, G_IO_IN);
+    connlist = g_list_alloc();
+    g_source_set_callback(lissource, (GSourceFunc)accept_cb, connlist, NULL);
+    g_source_attach(lissource, liscontext);
+    g_main_loop_run(lisloop);
+    g_main_loop_unref(lisloop);
     
     return 0;
 }

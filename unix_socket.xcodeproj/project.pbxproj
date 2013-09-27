@@ -295,9 +295,13 @@
 					"/usr/local/Cellar/glib/2.36.4/lib/glib-2.0/include",
 					/usr/local/opt/gettext/include,
 				);
-				LIBRARY_SEARCH_PATHS = /usr/local/Cellar/libevent/2.0.21/lib;
-				OTHER_LDFLAGS = "";
-				PRELINK_LIBS = event;
+				LIBRARY_SEARCH_PATHS = (
+					/usr/local/Cellar/libevent/2.0.21/lib,
+					/usr/local/Cellar/glib/2.36.4/lib,
+					/usr/local/opt/gettext/lib,
+				);
+				OTHER_LDFLAGS = "-lglib-2.0";
+				PRELINK_LIBS = "";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Debug;
@@ -314,9 +318,13 @@
 					"/usr/local/Cellar/glib/2.36.4/lib/glib-2.0/include",
 					/usr/local/opt/gettext/include,
 				);
-				LIBRARY_SEARCH_PATHS = /usr/local/Cellar/libevent/2.0.21/lib;
-				OTHER_LDFLAGS = "";
-				PRELINK_LIBS = event;
+				LIBRARY_SEARCH_PATHS = (
+					/usr/local/Cellar/libevent/2.0.21/lib,
+					/usr/local/Cellar/glib/2.36.4/lib,
+					/usr/local/opt/gettext/lib,
+				);
+				OTHER_LDFLAGS = "-lglib-2.0";
+				PRELINK_LIBS = "";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;
