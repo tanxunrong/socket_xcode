@@ -16,24 +16,28 @@ typedef struct txr_conn{
     char buf[MAXLINE];
 }txr_conn_t;
 typedef txr_conn_t * txr_conn_p;
+gint conncmp(gconstpointer data1,gconstpointer data2)
+{
+    return ((txr_conn_p)data1)->sockfd - ((txr_conn_p)data2)->sockfd;
+}
 int main(int argc,char* argv[])
 {
-    GHashTable *connht=g_hash_table_new_full(g_str_hash, g_str_equal,NULL,free);
 #define LEN_OF_CONNLIST 10
-    txr_conn_p conn[LEN_OF_CONNLIST];
+    GArray *connarr=g_array_sized_new(FALSE, TRUE, sizeof(txr_conn_t),LEN_OF_CONNLIST);
+    txr_conn_p conn = NULL;
     for (int i=0; i<LEN_OF_CONNLIST; i++) {
-        conn[i]=(txr_conn_p)malloc(sizeof(txr_conn_t));
-        memset(conn[i], 0, sizeof(txr_conn_t));
-        conn[i]->sockfd=rand();
-        sprintf(conn[i]->key, "conn list %d",i);
-        printf("key %d : %s\n",i,conn[i]->key);
-        g_hash_table_insert(connht, conn[i]->key, conn[i]);
+        conn = &g_array_index(connarr, txr_conn_t, i);
+        conn->sockfd=rand() % 100;
     }
-    assert(10 == g_hash_table_size(connht));
-    txr_conn_p connfind = g_hash_table_lookup(connht, "conn list 8");
-    assert(connfind != NULL);
-    assert(TRUE == g_hash_table_contains(connht, "conn list 7"));
-    g_hash_table_destroy(connht);
+    for (int i=0; i<LEN_OF_CONNLIST; i++) {
+        conn = &g_array_index(connarr, txr_conn_t, i);
+        printf("%d\n",conn->sockfd);
+    }
+    g_array_sort(connarr, (GCompareFunc)conncmp);
+    for (int i=0; i<LEN_OF_CONNLIST; i++) {
+        conn = &g_array_index(connarr, txr_conn_t, i);
+        printf("%d\n",conn->sockfd);
+    }
     return 0;
 }
 
