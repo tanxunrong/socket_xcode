@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		BDAF941717F5E1B4009DF736 /* main.c in Sources */ = {isa = PBXBuildFile; fileRef = BDAF941617F5E1B4009DF736 /* main.c */; };
+		BDAF941917F5E1B4009DF736 /* glibtest.1 in CopyFiles */ = {isa = PBXBuildFile; fileRef = BDAF941817F5E1B4009DF736 /* glibtest.1 */; };
 		BDBEDA5617F477BF003E528E /* main.c in Sources */ = {isa = PBXBuildFile; fileRef = BDBEDA5517F477BF003E528E /* main.c */; };
 		BDBEDA5817F477BF003E528E /* echo_client.1 in CopyFiles */ = {isa = PBXBuildFile; fileRef = BDBEDA5717F477BF003E528E /* echo_client.1 */; };
 		BDBEDA6317F47BB3003E528E /* main.c in Sources */ = {isa = PBXBuildFile; fileRef = BDBEDA6217F47BB3003E528E /* main.c */; };
@@ -14,6 +16,16 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
+		BDAF941217F5E1B4009DF736 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = /usr/share/man/man1/;
+			dstSubfolderSpec = 0;
+			files = (
+				BDAF941917F5E1B4009DF736 /* glibtest.1 in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 1;
+		};
 		BDBEDA5117F477BF003E528E /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
@@ -38,6 +50,9 @@
 
 /* Begin PBXFileReference section */
 		BD9ABB7717F3369D0099FB85 /* common.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = common.h; sourceTree = "<group>"; };
+		BDAF941417F5E1B4009DF736 /* glibtest */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = glibtest; sourceTree = BUILT_PRODUCTS_DIR; };
+		BDAF941617F5E1B4009DF736 /* main.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = main.c; sourceTree = "<group>"; };
+		BDAF941817F5E1B4009DF736 /* glibtest.1 */ = {isa = PBXFileReference; lastKnownFileType = text.man; path = glibtest.1; sourceTree = "<group>"; };
 		BDBEDA5317F477BF003E528E /* echo_client */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = echo_client; sourceTree = BUILT_PRODUCTS_DIR; };
 		BDBEDA5517F477BF003E528E /* main.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = main.c; sourceTree = "<group>"; };
 		BDBEDA5717F477BF003E528E /* echo_client.1 */ = {isa = PBXFileReference; lastKnownFileType = text.man; path = echo_client.1; sourceTree = "<group>"; };
@@ -47,6 +62,13 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		BDAF941117F5E1B4009DF736 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		BDBEDA5017F477BF003E528E /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -70,6 +92,7 @@
 				BD9ABB7617F3368F0099FB85 /* include */,
 				BDBEDA5417F477BF003E528E /* echo_client */,
 				BDBEDA6117F47BB3003E528E /* echo_server */,
+				BDAF941517F5E1B4009DF736 /* glibtest */,
 				BD9ABB6817F3320C0099FB85 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -79,6 +102,7 @@
 			children = (
 				BDBEDA5317F477BF003E528E /* echo_client */,
 				BDBEDA6017F47BB3003E528E /* echo_server */,
+				BDAF941417F5E1B4009DF736 /* glibtest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -89,6 +113,15 @@
 				BD9ABB7717F3369D0099FB85 /* common.h */,
 			);
 			path = include;
+			sourceTree = "<group>";
+		};
+		BDAF941517F5E1B4009DF736 /* glibtest */ = {
+			isa = PBXGroup;
+			children = (
+				BDAF941617F5E1B4009DF736 /* main.c */,
+				BDAF941817F5E1B4009DF736 /* glibtest.1 */,
+			);
+			path = glibtest;
 			sourceTree = "<group>";
 		};
 		BDBEDA5417F477BF003E528E /* echo_client */ = {
@@ -112,6 +145,23 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		BDAF941317F5E1B4009DF736 /* glibtest */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = BDAF941C17F5E1B4009DF736 /* Build configuration list for PBXNativeTarget "glibtest" */;
+			buildPhases = (
+				BDAF941017F5E1B4009DF736 /* Sources */,
+				BDAF941117F5E1B4009DF736 /* Frameworks */,
+				BDAF941217F5E1B4009DF736 /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = glibtest;
+			productName = glibtest;
+			productReference = BDAF941417F5E1B4009DF736 /* glibtest */;
+			productType = "com.apple.product-type.tool";
+		};
 		BDBEDA5217F477BF003E528E /* echo_client */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = BDBEDA5B17F477BF003E528E /* Build configuration list for PBXNativeTarget "echo_client" */;
@@ -169,11 +219,20 @@
 			targets = (
 				BDBEDA5217F477BF003E528E /* echo_client */,
 				BDBEDA5F17F47BB3003E528E /* echo_server */,
+				BDAF941317F5E1B4009DF736 /* glibtest */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXSourcesBuildPhase section */
+		BDAF941017F5E1B4009DF736 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BDAF941717F5E1B4009DF736 /* main.c in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		BDBEDA4F17F477BF003E528E /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -224,6 +283,19 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
+					"/usr/local/Cellar/glib/2.36.4/include/glib-2.0",
+					"/usr/local/Cellar/glib/2.36.4/lib/glib-2.0/include",
+					/usr/local/opt/gettext/include,
+					/usr/local/Cellar/libevent/2.0.21/include,
+				);
+				LIBRARY_SEARCH_PATHS = (
+					/usr/local/Cellar/libevent/2.0.21/lib,
+					/usr/local/Cellar/glib/2.36.4/lib,
+					/usr/local/opt/gettext/lib,
+				);
 				MACOSX_DEPLOYMENT_TARGET = 10.8;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = macosx;
@@ -256,8 +328,51 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
+					"/usr/local/Cellar/glib/2.36.4/include/glib-2.0",
+					"/usr/local/Cellar/glib/2.36.4/lib/glib-2.0/include",
+					/usr/local/opt/gettext/include,
+					/usr/local/Cellar/libevent/2.0.21/include,
+				);
+				LIBRARY_SEARCH_PATHS = (
+					/usr/local/Cellar/libevent/2.0.21/lib,
+					/usr/local/Cellar/glib/2.36.4/lib,
+					/usr/local/opt/gettext/lib,
+				);
 				MACOSX_DEPLOYMENT_TARGET = 10.8;
 				SDKROOT = macosx;
+			};
+			name = Release;
+		};
+		BDAF941A17F5E1B4009DF736 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
+				);
+				LIBRARY_SEARCH_PATHS = "$(inherited)";
+				OTHER_LDFLAGS = "-lglib-2.0";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		BDAF941B17F5E1B4009DF736 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
+				);
+				LIBRARY_SEARCH_PATHS = "$(inherited)";
+				OTHER_LDFLAGS = "-lglib-2.0";
+				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;
 		};
@@ -290,16 +405,8 @@
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
-					/usr/local/Cellar/libevent/2.0.21/include,
-					"/usr/local/Cellar/glib/2.36.4/include/glib-2.0",
-					"/usr/local/Cellar/glib/2.36.4/lib/glib-2.0/include",
-					/usr/local/opt/gettext/include,
 				);
-				LIBRARY_SEARCH_PATHS = (
-					/usr/local/Cellar/libevent/2.0.21/lib,
-					/usr/local/Cellar/glib/2.36.4/lib,
-					/usr/local/opt/gettext/lib,
-				);
+				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				OTHER_LDFLAGS = "-lglib-2.0";
 				PRELINK_LIBS = "";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -313,16 +420,8 @@
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
-					/usr/local/Cellar/libevent/2.0.21/include,
-					"/usr/local/Cellar/glib/2.36.4/include/glib-2.0",
-					"/usr/local/Cellar/glib/2.36.4/lib/glib-2.0/include",
-					/usr/local/opt/gettext/include,
 				);
-				LIBRARY_SEARCH_PATHS = (
-					/usr/local/Cellar/libevent/2.0.21/lib,
-					/usr/local/Cellar/glib/2.36.4/lib,
-					/usr/local/opt/gettext/lib,
-				);
+				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				OTHER_LDFLAGS = "-lglib-2.0";
 				PRELINK_LIBS = "";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -337,6 +436,15 @@
 			buildConfigurations = (
 				BD9ABB6E17F3320C0099FB85 /* Debug */,
 				BD9ABB6F17F3320C0099FB85 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		BDAF941C17F5E1B4009DF736 /* Build configuration list for PBXNativeTarget "glibtest" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				BDAF941A17F5E1B4009DF736 /* Debug */,
+				BDAF941B17F5E1B4009DF736 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

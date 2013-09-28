@@ -14,17 +14,20 @@
 			<key>orderHint</key>
 			<integer>2</integer>
 		</dict>
-		<key>unix_socket.xcscheme</key>
+		<key>glibtest.xcscheme</key>
 		<dict>
-			<key>isShown</key>
-			<false/>
 			<key>orderHint</key>
-			<integer>0</integer>
+			<integer>3</integer>
 		</dict>
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
 		<key>BD9ABB6617F3320C0099FB85</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>BDAF941317F5E1B4009DF736</key>
 		<dict>
 			<key>primary</key>
 			<true/>
