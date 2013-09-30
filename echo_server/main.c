@@ -11,8 +11,9 @@
 
 typedef struct txr_conn {
     int sockfd;
-    char rbuf[MAXLINE];
-    char wbuf[MAXLINE];
+    gchar *rbuf;
+    gsize rlen;
+    GError *err;
 } txr_conn_t;
 typedef txr_conn_t * txr_conn_p;
 static int listen_fd;
@@ -31,6 +32,30 @@ void display_list(GList *ll)
     printf("\n");
 }
 
+gboolean work_cb(GIOChannel *channel,GIOCondition condition,gpointer data)
+{
+    printf("iofunc called\n");
+    GIOStatus ioret;
+    txr_conn_p conn = (txr_conn_p)data;
+    if ( condition == G_IO_IN) {
+        ioret = g_io_channel_read_to_end(channel, &(conn->rbuf), &(conn->rlen), &(conn->err));
+        printf("read %lu chars\n",conn->rlen);
+        if (ioret == G_IO_STATUS_ERROR) {
+            return FALSE;
+        }
+    }
+    
+    if ( condition == G_IO_OUT)
+    {
+       ioret = g_io_channel_write_chars(channel, conn->rbuf, conn->rlen, NULL, &(conn->err));
+        printf("write %lu chars\n",conn->rlen);
+        if (ioret == G_IO_STATUS_ERROR) {
+            return FALSE;
+        }
+    }
+    return TRUE;
+}
+
 gboolean accept_cb(gpointer *data)
 {
 //    assert(data == NULL);
@@ -40,16 +65,15 @@ gboolean accept_cb(gpointer *data)
     txr_conn_p newconn = (txr_conn_p)malloc(sizeof(txr_conn_t));
     memset(newconn,0,sizeof(txr_conn_t));
     newconn->sockfd=sockfd;
-    assert(newconn->sockfd != 0);
     
     connlist = g_list_append(connlist, (gpointer)newconn);
     assert(connlist != NULL);
     
-    display_list(connlist);
-    g_print("new fd %d ,list count %d \n",sockfd,g_list_length(connlist));
+    GIOChannel *newchan = g_io_channel_unix_new(sockfd);
+    g_io_add_watch(newchan, G_IO_IN | G_IO_OUT, (GIOFunc)work_cb ,(gpointer)newconn);
+    g_print("new fd %d \n",sockfd);
     return TRUE;
 }
-
 
 int main(int argc,char* argv[])
 {
