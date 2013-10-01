@@ -18,42 +18,30 @@ typedef struct txr_conn{
 }txr_conn_t;
 typedef txr_conn_t * txr_conn_p;
 static int sum = 0;
-GMutex poollock ;
 void sumtohuge(gpointer data,gpointer userdata)
 {
     
-    int upnum = *(int *)(data);
+    int upnum = *(int *)data;
+    sleep(2);
     printf("%d add\n",upnum);
-    g_mutex_lock(&poollock);
     sum += upnum;
-    g_mutex_unlock(&poollock);
-    int sltime = rand() % 10;
-    
-    sleep(sltime);
-    
 }
 int main(int argc,char* argv[])
 {
     GError *err;
     GThreadPool *sumpool = g_thread_pool_new(sumtohuge,NULL,10,TRUE,&err);
-    
-    g_mutex_init(&poollock);
-    assert(err == NULL);
-//    for (int i=0; i<100; i++) {
-//        int upnum = rand() % 100;
-//        printf("upnum %d\t",upnum);
-//        g_thread_pool_push(sumpool, &upnum, &err);
-//        assert(err == NULL);
-//    }
-    
+    int *sand = (int *)malloc(sizeof(int) * 100);
+    int upnum = 0;
     for (int i=0; i<100; i++) {
-//        int upnum = rand() % 100;
-        g_thread_pool_push(sumpool, (gpointer)&i, &err);
+        upnum = rand() % 100;
+        memcpy(sand + i, &upnum, sizeof(int));
+        g_thread_pool_push(sumpool, sand+i, &err);
+        printf("%d \t",*(sand+i));
         assert(err == NULL);
     }
-    
-//    printf("%d unprocessed\n",g_thread_pool_unprocessed(sumpool));
+    printf("%d unprocessed\n",g_thread_pool_unprocessed(sumpool));
     g_thread_pool_free(sumpool, FALSE, TRUE);
+    free(sand);
     printf("sum %d\n",sum);
     return 0;
 }
