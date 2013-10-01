@@ -8,71 +8,61 @@
 
 #include "../include/common.h"
 #include <glib.h>
+#include <event2/event.h>
 
 typedef struct txr_conn {
-    int sockfd;
-    gchar *rbuf;
-    gsize rlen;
-    GError *err;
+    evutil_socket_t  sockfd;
+    size_t rlen;
+    char rbuf[MAXLINE];
+    struct event *event;
 } txr_conn_t;
 typedef txr_conn_t * txr_conn_p;
-static int listen_fd;
-static GMainContext *liscontext;
-static GMainLoop *lisloop;
-static GSource *lissource;
-static GList *connlist;
-void display_list(GList *ll)
-{
-    GList *it=NULL;
-    for (it = ll; it->next != NULL;it = ll->next) {
-        txr_conn_p conn=(txr_conn_p)it->data;
-        assert(conn->sockfd != 0);
-        printf("%d\t",conn->sockfd);
-    }
-    printf("\n");
-}
+static evutil_socket_t listen_fd;
+static struct event_base *mainbase;
+static GHashTable *connlist;
+static char *servermsg = "server msg";
+gboolean connequal(gconstpointer a,gconstpointer b);
 
-gboolean work_cb(GIOChannel *channel,GIOCondition condition,gpointer data)
+void callback_work(evutil_socket_t fd,short what,void *data)
 {
-    printf("iofunc called\n");
-    GIOStatus ioret;
-    txr_conn_p conn = (txr_conn_p)data;
-    if ( condition == G_IO_IN) {
-        ioret = g_io_channel_read_to_end(channel, &(conn->rbuf), &(conn->rlen), &(conn->err));
-        printf("read %lu chars\n",conn->rlen);
-        if (ioret == G_IO_STATUS_ERROR) {
-            return FALSE;
+    txr_conn_p conn = g_hash_table_lookup(connlist, &fd);
+    assert(conn != NULL);
+    if (what & EV_READ) {
+        ssize_t n = read(fd, conn->rbuf, MAXLINE);
+        conn->rlen = n;
+        if ( n < 0 & errno != EAGAIN && errno !=EWOULDBLOCK) {
+            goto FREE_EVENT;
         }
     }
-    
-    if ( condition == G_IO_OUT)
-    {
-       ioret = g_io_channel_write_chars(channel, conn->rbuf, conn->rlen, NULL, &(conn->err));
-        printf("write %lu chars\n",conn->rlen);
-        if (ioret == G_IO_STATUS_ERROR) {
-            return FALSE;
+    if (what & EV_WRITE) {
+        ssize_t n = write(fd, servermsg, strlen(servermsg)+1);
+        if ( n < 0 & errno != EAGAIN && errno !=EWOULDBLOCK) {
+            goto FREE_EVENT;
         }
     }
-    return TRUE;
+FREE_EVENT:
+    g_hash_table_remove(connlist, &fd);
+    event_free(conn->event);
+    free(conn);
+    close(fd);
 }
 
-gboolean accept_cb(gpointer *data)
+void callback_lis(evutil_socket_t fd,short what,void *data)
 {
-//    assert(data == NULL);
-    int sockfd=accept(listen_fd,NULL,NULL);
-    if (sockfd < 0)
-        return FALSE;
+    assert(what & EV_READ);
+    evutil_socket_t connfd=accept(fd, NULL, NULL);
+    assert(connfd > 0);
     txr_conn_p newconn = (txr_conn_p)malloc(sizeof(txr_conn_t));
-    memset(newconn,0,sizeof(txr_conn_t));
-    newconn->sockfd=sockfd;
-    
-    connlist = g_list_append(connlist, (gpointer)newconn);
-    assert(connlist != NULL);
-    
-    GIOChannel *newchan = g_io_channel_unix_new(sockfd);
-    g_io_add_watch(newchan, G_IO_IN | G_IO_OUT, (GIOFunc)work_cb ,(gpointer)newconn);
-    g_print("new fd %d \n",sockfd);
-    return TRUE;
+    memset(newconn, 0, sizeof(txr_conn_t));
+    newconn->sockfd=connfd;
+    g_hash_table_insert(connlist, &(newconn->sockfd), (gpointer)newconn);
+    struct event *newconn_event=event_new(mainbase, connfd, EV_READ | EV_WRITE, (event_callback_fn)callback_work, NULL);
+    newconn->event = newconn_event;
+}
+
+gboolean connequal(gconstpointer a,gconstpointer b)
+{
+    return ((txr_conn_p)a)->sockfd == ((txr_conn_p)b)->sockfd;
 }
 
 int main(int argc,char* argv[])
@@ -83,7 +73,6 @@ int main(int argc,char* argv[])
     servaddr.sin_port=htons(3789);
     if( inet_pton(AF_INET,"127.0.0.1",&servaddr.sin_addr) <= 0)
         err_quit ("inet_pton");
-    
 
     if ((listen_fd = socket(AF_INET,SOCK_STREAM,0)) < 0)
         err_sys("create socket");
@@ -95,17 +84,18 @@ int main(int argc,char* argv[])
         err_sys("listen");
     setfdnonblock(listen_fd);
     
-    liscontext = g_main_context_new();
-    lisloop = g_main_loop_new(liscontext, FALSE);
-
-    GIOChannel *lischan=g_io_channel_unix_new(listen_fd);
-    lissource=g_io_create_watch(lischan, G_IO_IN);
-
-    g_source_set_callback(lissource, (GSourceFunc)accept_cb, NULL, NULL);
-    g_source_attach(lissource, liscontext);
-    g_main_loop_run(lisloop);
-    g_main_loop_unref(lisloop);
+    connlist = g_hash_table_new(g_int_hash, (GEqualFunc)connequal);
+    assert(connlist != NULL);
     
+    mainbase = event_base_new();
+    assert(mainbase != NULL);
+    struct event *lisevent = event_new(mainbase, listen_fd, EV_READ, (event_callback_fn)callback_lis, NULL);
+    assert(lisevent != NULL);
+    event_add(lisevent, NULL);
+    event_base_dispatch(mainbase);
+    event_free(lisevent);
+    event_base_free(mainbase);
+    close(listen_fd);
     return 0;
 }
 
