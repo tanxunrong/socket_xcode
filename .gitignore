@@ -4,3 +4,4 @@
 *.lock
 *xcodeproj/xcuserdata/*
 unix_socket.xcodeproj/project.xcworkspace/xcshareddata/
+objs/*
